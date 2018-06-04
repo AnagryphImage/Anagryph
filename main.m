@@ -8,6 +8,7 @@ ORG = imread(filename);
 imagesc(ORG);
 axis image; xlabel('x'); ylabel('y');
 disp('原画像を表示しました．');
+pause;
 
 %% 顔認識
 bodyDetector = vision.CascadeObjectDetector('FrontalFaceCART');
@@ -75,8 +76,8 @@ for i=1:N
     IMG_a = imread(filename); % 被写体1の読み込み
     IMGS(:,:,i) = IMG_a(:,:)>128;
     
-    [H,L]=size(ORG) % 画像の縦幅取得0
-   L=length(ORG)   % 画像の横幅取得
+    [H,L]=size(ORG) % 画像の縦幅取得
+    L=length(ORG)   % 画像の横幅取得
     
     for j=H:-1:1    % それぞれの人物領域の足元を検出
         A=IMG_a(j,:);
@@ -90,7 +91,6 @@ for i=1:N
 end
 
 
-
 %% 深度の算出
 IMG_b = IMGS(:,:,N-1)*D(N-1);
 for i=N-2:-1:1
@@ -99,16 +99,16 @@ end
 IMG_b = IMG_b + (IMG_b==0)*255; % 背景の深度は255
 
 disp('人物の深度画像を表示しました．');
-
 imagesc(IMG_b); colormap(gray); colorbar;
 axis image; xlabel('x'); ylabel('y');
 pause;
 
+
+%% 地面領域の取得
 imshow(ORG)
-%{
 disp('地面の領域画像を作成します．');
-DetectHor;
-%}
+Horizon;
+
 disp('地面領域画像を指定してください．');
 filename = uigetfile('*');
 IMG_g = imread(filename); % 地面領域の読み込み
@@ -127,7 +127,6 @@ W=H-Ho;    % 画像下端から水平線までの列数
 
 T=255/W;
 
-
 for l=1:1:N+1 % 被写体間の列数取得
     if l==1 % 画像下端から最前人物
         Di(l)=H-F(l);
@@ -139,45 +138,23 @@ for l=1:1:N+1 % 被写体間の列数取得
 end
 
 C=0;
-%被写体の深度値が変化して、5人分の正確な深度値が分かる部分。(2018/5/28)
 for k=1:1:N % 被写体の深度値変更
     D(k)=Di(k)*T+C;
     C=D(k);
 end
-%{
-disp('地面領域画像を指定してください．');
-filename = uigetfile('*');
-IMG_h = imread(filename); % 地面領域の読み込み
-%}
-IMG_h=im2double(IMG_g);
-
-
-%どうやって背景を貼り付けるんだろう、、、
-
 
 IMG_c = IMGS(:,:,N-1)*D(N-1);
-
 for i=N:-1:1
-    IMG_c = IMG_c + IMG_h+(IMG_c==0 & IMGS(:,:,i))*D(i);
+    IMG_c = IMG_c + (IMG_c==0 & IMGS(:,:,i))*D(i);
 end
+IMG_c = IMG_c + (IMG_c==0)*255; % 背景の深度は255
 
-IMG_c = IMG_c +IMG_h+(IMG_c==256 & IMGS(:,:,i))*D(i); % 背景の深度は255
 disp('変更後の人物深度画像を表示しました．深度画像を保存します．');
 imagesc(IMG_c); colormap(gray); colorbar;
 axis image; xlabel('x'); ylabel('y');
 pause;
-imwrite(uint8(IMG_c),'de.jpg');
-%{
-%対数変換により深度マップ作成(地面のグラデーションができたら削除)
-IMG_d=log(IMG_c)
-disp('変更後の人物深度画像を表示しました．深度画像を保存します．');
-imagesc(IMG_d); colormap(gray); colorbar;
-axis image; xlabel('x'); ylabel('y');
-pause;
 
-imwrite(uint8(IMG_d),'dep.jpg'); % 画像の保存
-%}
-
+imwrite(uint8(IMG_c),'depth.jpg'); % 画像の保存
 
 
 % %% 左眼用画像生成
