@@ -1,0 +1,84 @@
+%% v3.0 [2015/11/14]
+%\documentclass[Proof,technicalreport]{ieicej}
+\documentclass[technicalreport]{ieicej}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+\usepackage{latexsym}
+%\usepackage[fleqn]{amsmath}
+%\usepackage{amssymb}
+
+\def\IEICEJcls{\texttt{ieicej.cls}}
+\def\IEICEJver{3.0}
+\newcommand{\AmSLaTeX}{%
+ $\mathcal A$\lower.4ex\hbox{$\!\mathcal M\!$}$\mathcal S$-\LaTeX}
+%\newcommand{\PS}{{\scshape Post\-Script}}
+\def\BibTeX{{\rmfamily B\kern-.05em{\scshape i\kern-.025em b}\kern-.08em
+ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125em X}}
+
+\jtitle{}
+%\jsubtitle{技術研究報告原稿のための解説とテンプレート}
+%\etitle{How to Use \LaTeXe\ Class File (\IEICEJcls\ version \IEICEJver) 
+        %for the Technical Report of the Institute of Electronics, Information 
+        %and Communication Engineers}
+%\esubtitle{Guide to the Technical Report and Template}
+
+ \authorentry[hanako@denshi.ac.jp]{高松　真}{Makoto Takamatsu}{Tokyo}% 
+\affiliate[Tokyo]{東京電機大学\hskip1zw
+  〒105--0123 東京都港区山田1--2--3}
+ {Faculty of Engineering,
+  First University\hskip1em
+  Yamada 1--2--3, Minato-ku, Tokyo,
+  105--0123 Japan}
+
+
+%\MailAddress{$\dagger$hanako@denshi.ac.jp,
+% $\dagger\dagger$\{taro,jiro\}@jouhou.co.jp}
+
+\begin{document}
+\begin{jabstract}
+我々は擬似立体視という手法を用いることで、単眼写真の立体視を実現した。我々は相対深度に着目して擬似立体を実現している。
+\end{jabstract}
+\begin{jkeyword}
+マルコフ確率場,擬似立体視,相対深度,ハフ変換
+\end{jkeyword}
+
+\maketitle
+
+\section{まえがき}
+
+一枚の静止画像から立体視を実現する方法として、筆者らは物体認識システムを用いて被写体を認識、被写体のサイズから相対深度を推定し、各被写体の深度を等間隔に割り当て擬似立体視を実現する方法について検討した[1]。
+
+
+%地平線の位置を推定することにより
+\section{提案}
+地表を映した写真では、各被写体の相対深度の割り当てと地面の相対深度の割り当てが異なり、擬似立体視のギャップを感じることがあった。そこで、我々は地面の相対深度を各被写体の相対深度にあわせることで、地表を映した写真での擬似立体視を実現することを提案する。また、空は無限遠点に存在する領域であり、相対深度で扱うことは不可能で領域である。したがって、無限遠点である空の領域と相対深度として扱える被写体領域を区別するための平行線推定を行うことも提案する。
+
+
+\section{提案手法}
+
+\section{ハフ変換を用いた地平線推定}
+
+\section{我々の従来法}
+\subsection{相対深度算出}
+\subsection{擬似立体視作成}
+
+
+\begin{figure}
+\centering
+\includegraphics{a.jpg}
+\end{figure}
+
+%\ack %% 謝辞
+
+%\bibliographystyle{sieicej}
+%\bibliography{myrefs}
+\begin{thebibliography}{99}% 文献数が10未満の時 {9}
+\bibitem{}
+\end{thebibliography}
+
+%\appendix
+
+
+\end{document}
